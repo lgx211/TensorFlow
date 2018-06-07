@@ -8,7 +8,7 @@ LEARNING_RATE_DECAY = 0.99
 # 喂了多少轮BACTH_SIZE后，更新一次学习率。一般设为：总样本数/BATCH_SIZE
 LEARNING_RATE_STEP = 1
 
-# 运行第几轮BATCH_SIZE的计数器，初始值为0，不被训练
+# 运行到了第几轮BATCH_SIZE,即计数器，初始值为0，不被训练
 global_step = tf.Variable(0, trainable=False)
 # 指数下降学习率
 learning_rate = tf.train.exponential_decay(LEARNING_RATE_BASE, global_step, LEARNING_RATE_STEP, LEARNING_RATE_DECAY,
