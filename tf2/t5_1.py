@@ -11,6 +11,7 @@ Y_ = [int(x0 * x0 + x1 * x1 < 2) for (x0, x1) in X]
 
 Y_c = [['red' if y else 'blue'] for y in Y_]
 
+# 对数据集X和标签Y_进行shape处理。-1表示随第二个参数计算得到。把X整理为n行2列，把Y_整理为n行1列
 X = np.vstack(X).reshape(-1, 2)
 Y_ = np.vstack(Y_).reshape(-1, 1)
 
@@ -52,7 +53,7 @@ with tf.Session() as sess:
     init_op = tf.global_variables_initializer()
     sess.run(init_op)
 
-    STEPS = 40000
+    STEPS = 400000
     for i in range(STEPS):
         start = (i * BATCH_SIZE) % 300
         end = start + BATCH_SIZE

@@ -61,6 +61,7 @@ with tf.Session() as sess:
         if i % 2000 == 0:
             loss_mse_v = sess.run(loss_mse, feed_dict={x: X, y_: Y_})
             print("After %d steps ,loss is : %f  " % (i, loss_mse_v))
+
     xx, yy = np.mgrid[-3:3:.01, -3:3:.01]
     grid = np.c_[xx.ravel(), yy.ravel()]
     probs = sess.run(y, feed_dict={x: grid})
