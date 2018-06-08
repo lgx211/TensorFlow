@@ -6,7 +6,7 @@ BATCH_SIZE = 30
 seed = 2
 
 rdm = np.random.RandomState(seed=seed)
-X = rdm.rand(300, 2)
+X = rdm.randn(300, 2)
 Y_ = [int(x0 * x0 + x1 * x1 < 2) for (x0, x1) in X]
 
 Y_c = [['red' if y else 'blue'] for y in Y_]
@@ -38,9 +38,9 @@ y_ = tf.placeholder(tf.float32, shape=(None, 1))
 
 w1 = get_weight([2, 11], 0.01)
 b1 = get_bias([11])
-y1 = tf.nn.relu(tf.matmul(x, w1), b1)
+y1 = tf.nn.relu(tf.matmul(x, w1) + b1)
 
-w2 = get_weight([11, 2], 0.01)
+w2 = get_weight([11, 1], 0.01)
 b2 = get_bias([1])
 y = tf.matmul(y1, w2) + b2
 
