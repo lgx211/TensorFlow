@@ -27,7 +27,7 @@ def test(mnist):
                     saver.restore(sess, ckpt.model_checkpoint_path)
                     global_step = ckpt.model_checkpoint_path.split('/')[-1].split('-')[-1]
                     accuracy_score = sess.run(accuracy, feed_dict={x: mnist.test.images, y_: mnist.test.labels})
-                    print("After %d steps ,accuracy is %g " % (global_step, accuracy_score))
+                    print("After %s steps ,accuracy is %g " % (global_step, accuracy_score))
                 else:
                     print("No checkpoint file found")
                     return
