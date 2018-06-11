@@ -1,6 +1,6 @@
 import tensorflow as tf
-import tensorflow.examples.tutorials.mnist.input_data as input_data;
-import mnist_forword
+import tensorflow.examples.tutorials.mnist.input_data as input_data
+import tf4.mnist_forword as mnist_forword
 import os
 
 BATCH_SIZE = 200

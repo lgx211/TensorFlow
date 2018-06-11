@@ -1,8 +1,8 @@
 import tensorflow as tf
-import tensorflow.examples.tutorials.mnist.input_data as input_data;
+import tensorflow.examples.tutorials.mnist.input_data as input_data
 import time
-import mnist_backword
-import mnist_forword
+import tf4.mnist_backword as mnist_backword
+import tf4.mnist_forword as mnist_forword
 
 TEST_INTERVAL_SECS = 5
 
