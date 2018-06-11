@@ -2,6 +2,7 @@ import tensorflow as tf
 import tensorflow.examples.tutorials.mnist.input_data as input_data
 import tf4.mnist_forword as mnist_forword
 import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 BATCH_SIZE = 200
 LEARNING_RATE_BASE = 0.1
@@ -19,7 +20,7 @@ def backward(mnist):
     y = mnist_forword.forword(x, REGULARIZER)
     global_step = tf.Variable(0, trainable=False)
 
-    ce = tf.nn.sparse_softmax_cross_entropy_with_logits(logits=y, labels=tf.arg_max(y_, 1))
+    ce = tf.nn.sparse_softmax_cross_entropy_with_logits(logits=y, labels=tf.argmax(y_, 1))
     cem = tf.reduce_mean(ce)
     loss = cem + tf.add_n(tf.get_collection('losses'))
 
@@ -28,7 +29,7 @@ def backward(mnist):
         global_step,
         mnist.train.num_examples / BATCH_SIZE,
         LEARNING_RATE_DECAY,
-        staticmethod=True
+        staircase=True
     )
 
     trian_step = tf.train.GradientDescentOptimizer(learning_rate).minimize(loss, global_step=global_step)
