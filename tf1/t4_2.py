@@ -1,5 +1,6 @@
 import tensorflow as tf
 
+# 占一个N行2列的矩阵
 x = tf.placeholder(tf.float32, shape=[None, 2])
 
 w1 = tf.Variable(tf.random_normal([2, 3], stddev=1, seed=1))
@@ -14,6 +15,5 @@ with tf.Session() as sess:
 
     print("w1是:", sess.run(w1))
     print("w2是:", sess.run(w2))
-    print("a是:", sess.run(a, feed_dict={x: [[0.7, 0.5], [0.4, 0.7]]}))
-
-    print("y是:", sess.run(y, feed_dict={x: [[0.7, 0.5], [0.4, 0.7]]}))
+    print("a是:", sess.run(a, feed_dict={x: [[0.7, 0.5], [0.4, 0.7], [0.2, 0.8]]}))
+    print("y是:", sess.run(y, feed_dict={x: [[0.7, 0.5], [0.4, 0.7], [0.2, 0.8]]}))

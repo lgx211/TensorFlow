@@ -1,5 +1,6 @@
 import tensorflow as tf
 
+# 占一个一行两列的二维数组
 x = tf.placeholder(tf.float32, shape=[1, 2])
 
 w1 = tf.Variable(tf.random_normal([2, 3], stddev=1, seed=1))
