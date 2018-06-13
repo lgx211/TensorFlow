@@ -2,6 +2,7 @@ import tensorflow as tf
 import tensorflow.examples.tutorials.mnist.input_data as input_data
 import tf4.mnist_forword as mnist_forword
 import os
+
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 BATCH_SIZE = 200
@@ -22,6 +23,7 @@ def backward(mnist):
 
     ce = tf.nn.sparse_softmax_cross_entropy_with_logits(logits=y, labels=tf.argmax(y_, 1))
     cem = tf.reduce_mean(ce)
+    # tf.add_n：把一个列表的东西都依次加起来
     loss = cem + tf.add_n(tf.get_collection('losses'))
 
     learning_rate = tf.train.exponential_decay(

@@ -1,9 +1,13 @@
-import tensorflow as tf
-import os
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+import tensorflow as tf;
+import numpy as np;
 
-x = tf.constant([[1, 2], [1, 2]])
-y = tf.constant([[1, 1], [1, 2]])
+input1 = tf.constant([[1.0, 2.0, 3.0]])
+input2 = tf.Variable([[1.0, 2.0, 3.0]])
+a = tf.add_n([input1, input2])
+b = tf.add_n(input1, input2)
+c = tf.add_n(input1)
 
-z = tf.add_n(x, y)
-print(z)
+with tf.Session() as sess:
+    sess.run(tf.initialize_all_variables())
+    print(sess.run(a))
+    print(sess.run(b))

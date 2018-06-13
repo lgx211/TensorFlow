@@ -17,23 +17,12 @@ with tf.Session() as sess:
     init_op = tf.global_variables_initializer()
     sess.run(init_op)
 
-    # 打印w1和w1滑动平均值的初始值
-    print("第一次", sess.run([w1, ema.average(w1)]))
-
     # 更新参数w1的值为1
     sess.run(tf.assign(w1, 1))
     # 更新参数后，运算
     sess.run(ema_op)
     # 打印运算过后的w1和w1滑动平均值的初始值
     print("第二次", sess.run([w1, ema.average(w1)]))
-
-    # 跟新step为100轮和w1为10
-    sess.run(tf.assign(global_step, 100))
-    sess.run(tf.assign(w1, 10))
-    # 更新参数后，运算
-    sess.run(ema_op)
-    # 打印运算过后的w1和w1滑动平均值的初始值
-    print("第三次", sess.run([w1, ema.average(w1)]))
 
     sess.run(ema_op)
     print(sess.run([w1, ema.average(w1)]))

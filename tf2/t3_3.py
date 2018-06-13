@@ -26,7 +26,10 @@ with tf.Session() as sess:
     init_op = tf.global_variables_initializer()
     sess.run(init_op)
     for i in range(800):
+        # 运算
         sess.run(train_step)
+
+        # 查看运算过程的各个数据的变化
         learning_rate_val = sess.run(learning_rate)
         global_step_val = sess.run(global_step)
         w_val = sess.run(w)

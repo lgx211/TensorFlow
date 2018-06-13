@@ -55,6 +55,6 @@ def backgroud():
     plt.show()
 
 
+# 判断python运行文件是否为主文件
 if __name__ == '__main__':
     backgroud()
-

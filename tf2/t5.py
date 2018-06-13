@@ -12,20 +12,22 @@ Y_ = [int(x0 * x0 + x1 * x1 < 2) for (x0, x1) in X]
 # y为1则红，为0则蓝
 Y_c = [['red' if y else 'blue'] for y in Y_]
 
+# 把X整理成n行2列
 X = np.vstack(X).reshape(-1, 2)
+# 把Y_整理成n行1列
 Y_ = np.vstack(Y_).reshape(-1, 1)
 
 print(X)
 print(Y_)
 print(Y_c)
 
+# plt.scatter (x坐标, y坐标, c=”颜色”)
 plt.scatter(X[:, 0], X[:, 1], c=np.squeeze(Y_c))
 plt.show()
 
 
-def get_weight(shape, regularizer):
+def get_weight(shape):
     w = tf.Variable(tf.random_normal(shape), dtype=tf.float32)
-    tf.add_to_collection('losses', tf.contrib.layers.l2_regularizer(regularizer)(w))
     return w
 
 
@@ -37,16 +39,15 @@ def get_bias(shape):
 x = tf.placeholder(tf.float32, shape=(None, 2))
 y_ = tf.placeholder(tf.float32, shape=(None, 1))
 
-w1 = get_weight([2, 11], 0.01)
+w1 = get_weight([2, 11])
 b1 = get_bias([11])
 y1 = tf.nn.relu(tf.matmul(x, w1) + b1)
 
-w2 = get_weight([11, 1], 0.01)
+w2 = get_weight([11, 1])
 b2 = get_bias([1])
 y = tf.matmul(y1, w2) + b2
 
 loss_mse = tf.reduce_mean(tf.square(y - y_))
-loss_total = loss_mse + tf.add_n(tf.get_collection('losses'))
 train_step = tf.train.AdamOptimizer(0.0001).minimize(loss_mse)
 
 with tf.Session() as sess:
@@ -62,7 +63,11 @@ with tf.Session() as sess:
             loss_mse_v = sess.run(loss_mse, feed_dict={x: X, y_: Y_})
             print("After %d steps ,loss is : %f  " % (i, loss_mse_v))
 
+    # xx, yy = np.mgrid[起:止:步长, 起:止:步长]
+    # 找到规定区域以步长为分辨率的行列网格坐标点
     xx, yy = np.mgrid[-3:3:.01, -3:3:.01]
+
+    # 收集规定区域内所有的网格坐标点
     grid = np.c_[xx.ravel(), yy.ravel()]
     probs = sess.run(y, feed_dict={x: grid})
     probs = probs.reshape(xx.shape)
@@ -72,5 +77,8 @@ with tf.Session() as sess:
     print("w1", sess.run(w2))
 
 plt.scatter(X[:, 0], X[:, 1], c=np.squeeze(Y_c))
+
+# 告知x、y坐标和各点高度，用levels指定高度的点描上颜色
+# plt.contour(x轴坐标值, y轴坐标值, 该点的高度, levels=[等高线的高度])
 plt.contour(xx, yy, probs, levels=[.5])
 plt.show()
