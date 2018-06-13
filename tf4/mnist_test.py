@@ -22,6 +22,7 @@ def test(mnist):
 
         while True:
             with tf.Session() as sess:
+                # 断点续训
                 ckpt = tf.train.get_checkpoint_state(mnist_backword.MODEL_SAVE_PATH)
                 if ckpt and ckpt.model_checkpoint_path:
                     saver.restore(sess, ckpt.model_checkpoint_path)
