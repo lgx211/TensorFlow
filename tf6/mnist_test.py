@@ -3,15 +3,22 @@ import tensorflow.examples.tutorials.mnist.input_data as input_data
 import time
 import tf6.mnist_backword as mnist_backword
 import tf6.mnist_forword as mnist_forword
+import numpy as np
 
 TEST_INTERVAL_SECS = 5
 
 
 def test(mnist):
     with tf.Graph().as_default() as g:
-        x = tf.placeholder(tf.float32, [None, mnist_forword.INPUT_NODE])
+        x = tf.placeholder(tf.float32, [
+            mnist.test.num_examples,
+            mnist_forword.IMAGE_SIZE,
+            mnist_forword.IMAGE_SIZE,
+            mnist_forword.NUM_CHANNELS
+        ])
         y_ = tf.placeholder(tf.float32, [None, mnist_forword.OUTPUT_NODE])
-        y = mnist_forword.forword(x, None)
+        # 在测试程序中使用的是训练好的网络，故不使用 dropout，而是让所有神经元都参与运算，从而输出识别准确率。
+        y = mnist_forword.forword(x, False, None)
 
         ema = tf.train.ExponentialMovingAverage(mnist_backword.MOVING_AVERAGE_DECAY)
         ema_restore = ema.variables_to_restore()
