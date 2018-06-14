@@ -2,6 +2,7 @@ import tensorflow as tf
 import tensorflow.examples.tutorials.mnist.input_data as input_data
 import tf6.mnist_forword as mnist_forword
 import os
+import numpy as np
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
@@ -16,9 +17,14 @@ MODEL_NAME = "mnist_model"
 
 
 def backward(mnist):
-    x = tf.placeholder(tf.float32, [None, mnist_forword.INPUT_NODE])
+    x = tf.placeholder(tf.float32, [
+        BATCH_SIZE,
+        mnist_forword.IMAGE_SIZE,
+        mnist_forword.IMAGE_SIZE,
+        mnist_forword.NUM_CHANNELS
+    ])
     y_ = tf.placeholder(tf.float32, [None, mnist_forword.OUTPUT_NODE])
-    y = mnist_forword.forword(x, REGULARIZER)
+    y = mnist_forword.forword(x, True, REGULARIZER)
     global_step = tf.Variable(0, trainable=False)
 
     ce = tf.nn.sparse_softmax_cross_entropy_with_logits(logits=y, labels=tf.argmax(y_, 1))
@@ -39,7 +45,7 @@ def backward(mnist):
     ema = tf.train.ExponentialMovingAverage(MOVING_AVERAGE_DECAY, global_step)
     ema_op = ema.apply(tf.trainable_variables())
     with tf.control_dependencies([trian_step, ema_op]):
-        trian_op = tf.no_op(name='train')
+        train_op = tf.no_op(name='train')
 
     saver = tf.train.Saver()
 
@@ -47,12 +53,19 @@ def backward(mnist):
         init_op = tf.global_variables_initializer()
         sess.run(init_op)
 
-        for i in range(STEPS):
-            xs, ys = mnist.train.next_batch(BATCH_SIZE)
-            _, loss_value, step = sess.run([trian_op, loss, global_step], feed_dict={x: xs, y_: ys})
-            if i % 1000 == 0:
-                print("After %d steps , loss on trianing bacth is %g" % (step, loss_value))
-                #saver.save(sess, os.path.join(MODEL_SAVE_PATH, MODEL_NAME), global_step=global_step)
+    for i in range(STEPS):
+        xs, ys = mnist.train.next_batch(BATCH_SIZE)
+        reshaped_xs = np.reshape(xs, (
+            BATCH_SIZE,
+            mnist_forword.IMAGE_SIZE,
+            mnist_forword.IMAGE_SIZE,
+            mnist_forword.NUM_CHANNELS))
+
+        _, loss_value, step = sess.run([train_op, loss, global_step], feed_dict={x: reshaped_xs, y_: ys})
+
+        if i % 1000 == 0:
+            print("After %d steps , loss on trianing bacth is %g" % (step, loss_value))
+            saver.save(sess, os.path.join(MODEL_SAVE_PATH, MODEL_NAME), global_step=global_step)
 
 
 if __name__ == '__main__':
