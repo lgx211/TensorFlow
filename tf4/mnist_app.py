@@ -60,11 +60,9 @@ def restore_model(testPicArr):
 
 
 def application():
-    # input()函数可以从控制台读取数字
     testNum = input("请输入本次要识别的图片张数：")
     for i in range(testNum):
-        # raw_input()函数可以从控制台读取字符串
-        testPic = raw_input("图片路径：")
+        testPic = input("图片路径：")
         # 把图片信息转为数组
         testPicArr = pre_pic(testPic)
         preValue = restore_model(testPicArr)
