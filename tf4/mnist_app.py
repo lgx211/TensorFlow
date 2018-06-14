@@ -36,14 +36,14 @@ def pre_pic(picName):
 
 # 重现计算图
 def restore_model(testPicArr):
-    with tf.Graph.as_default() as tg:
+    with tf.Graph().as_default() as tg:
         x = tf.placeholder(tf.float32, [None, mnist_forword.INPUT_NODE])
         y = mnist_forword.forword(x, None)
 
         # 预测结果值
         preValue = tf.argmax(y, 1)
 
-        variable_averages = tf.train.ExponentialMovingAverage(mnist_forword.MOVING_AVERAGE_DECAY)
+        variable_averages = tf.train.ExponentialMovingAverage(mnist_backword.MOVING_AVERAGE_DECAY)
         variables_to_restore = variable_averages.variables_to_restore()
         saver = tf.train.Saver(variables_to_restore)
 
@@ -61,10 +61,13 @@ def restore_model(testPicArr):
 
 def application():
     testNum = input("请输入本次要识别的图片张数：")
-    for i in range(testNum):
+    for i in range(int(testNum)):
         testPic = input("图片路径：")
         # 把图片信息转为数组
         testPicArr = pre_pic(testPic)
         preValue = restore_model(testPicArr)
 
         print("该图片的值是：", preValue)
+
+if __name__ == '__main__':
+    application()

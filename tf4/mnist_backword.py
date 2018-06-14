@@ -52,7 +52,7 @@ def backward(mnist):
             _, loss_value, step = sess.run([trian_op, loss, global_step], feed_dict={x: xs, y_: ys})
             if i % 1000 == 0:
                 print("After %d steps , loss on trianing bacth is %g" % (step, loss_value))
-                saver.save(sess, os.path.join(MODEL_SAVE_PATH, MODEL_NAME), global_step=global_step)
+                #saver.save(sess, os.path.join(MODEL_SAVE_PATH, MODEL_NAME), global_step=global_step)
 
 
 if __name__ == '__main__':
