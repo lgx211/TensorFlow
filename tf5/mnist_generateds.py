@@ -3,22 +3,23 @@ import numpy as np
 from PIL import Image
 import os
 
-image_train_path = ''
-label_train_path = ''
-tfRecord_train = ''
+image_train_path = './mnist_data_jpg/mnist_train_jpg_60000/'
+label_train_path = './mnist_data_jpg/mnist_train_jpg_60000.txt'
+tfRecord_train = './data/mnist_train.tfrecords'
 
-image_test_path = ''
-label_test_path = ''
-tfRecord_test = ''
+image_test_path = './mnist_data_jpg/mnist_test_jpg_10000/'
+label_test_path = './mnist_data_jpg/mnist_test_jpg_10000.txt'
+tfRecord_test = './data/mnist_test.tfrecords'
 
-data_path = ''
-resize_height = ''
-resize_weight = ''
+data_path = './data'
+resize_height = 28
+resize_weight = 28
 
 
 # 生成tfRecord文件
 def write_tfRecord(tfRecordName, image_path, label_path):
-    write = tf.python_io.TFRecordWriter(tfRecordName)
+    # 新建一个 writer
+    writer = tf.python_io.TFRecordWriter(tfRecordName)
     # 计数器，显示进度
     num_pic = 0
     # 以读的形式打开标签文件，此处我的标签文件是一个TXT文件
@@ -50,7 +51,7 @@ def write_tfRecord(tfRecordName, image_path, label_path):
         # 每处理完一次，计数器加1
         num_pic += 1
         print("the number of picture is :", num_pic)
-    write.close()
+    writer.close()
     print("write tfRecord successful")
 
 
