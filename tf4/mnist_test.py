@@ -4,7 +4,7 @@ import time
 import tf4.mnist_backword as mnist_backword
 import tf4.mnist_forword as mnist_forword
 
-TEST_INTERVAL_SECS = 5
+TEST_INTERVAL_SECS = 10
 
 
 def test(mnist):
